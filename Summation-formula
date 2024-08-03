@@ -1,3 +1,4 @@
+#請複製下面的程式碼並以.py檔開啟
 from math import *
 def fun():
     if k%1==0 and l>k and k>0 and k2==0:
