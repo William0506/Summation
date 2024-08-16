@@ -94,7 +94,7 @@ for a in range(fun()+1):
             break
     r1+=d
     d0=d
-    print(r1)
+print(r1)
 if n>0 and n%1==0:
     for i in range(1,int(n+1)):
         r2+=i**complex(k,k2)
