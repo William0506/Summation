@@ -106,7 +106,7 @@ while not isinstance(cx, int) or not isinstance(dx, int) or not isinstance(ex, i
             raise ValueError
     except:
         print("field num must be three non-negative integers separated by a comma.")
-if cx==0 and dx==0:
+if cx==0 and dx==0:#People who don't want to install these mod should rewrite this part.
     try:
         from MEmod import *
         md = md(ex)
