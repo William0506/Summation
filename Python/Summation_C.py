@@ -69,7 +69,10 @@ for a in range(l+1):
                 d*=complex(0,k2)
     else:
         d/=k%1-int(k%1!=0)+1
-        d/=complex(1,k2/(k+1))
+        if k!=-1:
+            d/=complex(1,k2/(k+1))
+        else:
+            d/=complex(0,k2)
     #c part
     if a==1:
         pass
