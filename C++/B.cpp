@@ -4,7 +4,6 @@
 #include <cmath>
 #include <fstream>
 using namespace std;
-
 int calculateBernoulliNumbers(int n) {
     ofstream ofs;
     vector<long double> B(n + 1);
@@ -16,8 +15,6 @@ int calculateBernoulliNumbers(int n) {
             A[j - 1] = j * (A[j - 1] - A[j]);
         }
         B[m] = A[0];
-
-        // 設置奇數索引（除了B[1]）的伯努利數為0
         if (m > 1 && m % 2 == 1) {
             B[m] = 0;
         }
@@ -35,5 +32,6 @@ int main() {
     int n;
     cin >> n;
     calculateBernoulliNumbers(n);
+    cin.get();
     return 0;
 }

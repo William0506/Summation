@@ -219,7 +219,7 @@ int main() {
         cout << "Error: ";
         cout << r1-r2 <<endl;
     } else if (fmod(n, 1) == 0) {
-        for (int i = n; i > 1; i--) {
+        for (int i = n + 1; i < 1; i++) {
             r2 -= spha_obj.mp(i,k);
         }
         cout << "Actual: ";
@@ -230,5 +230,6 @@ int main() {
         string r3 = "undefined";
         cout << r3 << endl;
     }
+    cin.get();
     return 0;
 }

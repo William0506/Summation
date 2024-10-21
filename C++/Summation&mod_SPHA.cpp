@@ -17,7 +17,6 @@ int factorial(int n) {
     if (n == 0 || n == 1) return 1;
     return n * factorial(n - 1);
 }
-
 class spha {
 private:
     int x, y, z;
@@ -125,20 +124,42 @@ public:
     vector<long double> mp(long double a, const vector<long double>& b) const {
         int n = x + y + z;
         vector<long double> result(pow(2, n), 0);
-        result[0] = pow(a, b[0]);
-        for (int i = 1; i < pow(2, n); i++) {
-            vector<long double> term(pow(2, n), 0);
-            if (ps(i) > 0) {
-                term[0] = cosh(b[i] * log(a));
-                term[i] = sinh(b[i] * log(a));
-            } else if (ps(i) < 0) {
-                term[0] = cos(b[i] * log(a));
-                term[i] = sin(b[i] * log(a));
+        if (a != 0) {
+            long double abs_a = abs(a);
+            long double log_abs_a = log(abs_a);
+            if (a > 0) {
+                result[0] = pow(a, b[0]);
             } else {
-                term[0] = 1;
-                term[i] = b[i] * log(a);
+                result[0] = pow(-a, b[0]) * cos(b[0] * M_PI);
+                result[pow(2, n-1)] = pow(-a, b[0]) * sin(b[0] * M_PI);
             }
-            result = md1(result, term);
+            for (int i = 1; i < pow(2, n); i++) {
+                vector<long double> term(pow(2, n), 0);
+                int ps_i = ps(i);
+                if (ps_i > 0) {
+                    term[0] = cosh(b[i] * log_abs_a);
+                    term[i] = sinh(b[i] * log_abs_a);
+                } else if (ps_i < 0) {
+                    term[0] = cos(b[i] * log_abs_a);
+                    term[i] = sin(b[i] * log_abs_a);
+                } else {
+                    term[0] = 1;
+                    term[i] = b[i] * log_abs_a;
+                }
+                result = md1(result, term);
+                if (a < 0) {
+                    long double rotationFactor = exp(ps_i * M_PI * b[i]);
+                    for (auto& v : result) {
+                        v *= rotationFactor;
+                    }
+                }
+            }
+        } else {
+            if (all_of(b.begin(), b.end(), [](long double v) { return v == 0; })) {
+                result[0] = 1;
+            } else {
+                result[0] = 0;
+            }
         }
         return result;
     }
@@ -420,7 +441,7 @@ int main() {
         cout << "Error: ";
         cout << r1-r2 <<endl;
     } else if (fmod(n, 1) == 0) {
-        for (int i = n; i > 1; i--) {
+        for (int i = n + 1; i < 1; i++) {
             r2 -= spha.mp(i,k);
         }
         cout << "Actual: ";
@@ -431,5 +452,6 @@ int main() {
         string r3 = "undefined";
         cout << r3 << endl;
     }
+    cin.get();
     return 0;
 }
