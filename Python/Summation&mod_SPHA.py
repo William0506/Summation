@@ -1,6 +1,6 @@
 f = open("D:\Programming\python\Bs.txt", 'r')#remember to change the file address
 import numpy as np
-from math import log,cos,sin,cosh,sinh,ceil,factorial,pi,e
+from math import *
 from scipy.special import zeta
 import os,sys
 def md(x, y, z):
@@ -16,7 +16,8 @@ def md1(x, y, z):
             elif y == 1 : return np.array([a[0]*b[0] + a[1]*b[1], a[0]*b[1] + a[1]*b[0]])
             else : return np.array([a[0]*b[0], a[0]*b[1] + a[1]*b[0]])
         else:
-            a1, a2, b1, b2= a[:2**(n-1)], a[2**(n-1):], b[:2**(n-1)], b[2**(n-1):]
+            a1, a2 = a[:2**(n-1)], a[2**(n-1):]
+            b1, b2 = b[:2**(n-1)], b[2**(n-1):]
             if z > 0:
                 c1 = md1(x, y, z-1)(a1, b1)
                 c2 = md1(x, y, z-1)(a1, b2) + md1(x, y, z-1)(a2, b1)
@@ -65,29 +66,19 @@ def mp(x, y, z):
     def pow(a, b):
         n = x + y + z
         result = np.zeros(2**n)
-        if a != 0:
-            abs_a = abs(a)
-            log_abs_a = log(abs_a)
-            if a > 0 : result[0] = a**b[0]
+        result[0] = a**b[0]
+        for i in range(1, 2**n):
+            term = np.zeros(2**n)
+            if ps(i, x, y, z) > 0:
+                term[0] = cosh(b[i] * log(a))
+                term[i] = sinh(b[i] * log(a))
+            elif ps(i, x, y, z) < 0:
+                term[0] = cos(b[i] * log(a))
+                term[i] = sin(b[i] * log(a))
             else:
-                result[0] = abs_a**b[0] * cos(b[0]*pi)
-                result[2**(n-1)] = abs_a**b[0] * sin(b[0]*pi)
-            for i in range(1, 2**n):
-                term = np.zeros(2**n)
-                ps_i = ps(i, x, y, z)
-                if ps_i > 0:
-                    term[0] = cosh(b[i] * log_abs_a)
-                    term[i] = sinh(b[i] * log_abs_a)
-                elif ps_i < 0:
-                    term[0] = cos(b[i] * log_abs_a)
-                    term[i] = sin(b[i] * log_abs_a)
-                else:
-                    term[0] = 1
-                    term[i] = b[i] * log_abs_a
-                result = md1(x, y, z)(result, term)
-                if a < 0 : result *= e**(ps_i * pi * b[i])
-        else:
-            if np.all(b == 0) : result[0] = 1
+                term[0] = 1
+                term[i] = b[i] * log(a)
+            result = md1(x, y, z)(result, term)
         return result
     return pow
 n = k = l = cx = dx = ex = ""
@@ -115,10 +106,47 @@ while not isinstance(cx, int) or not isinstance(dx, int) or not isinstance(ex, i
             raise ValueError
     except:
         print("field num must be three non-negative integers separated by a comma.")
-md = md(cx, dx, ex)
-md1 = md1(cx, dx, ex)
-md2 = md2(cx, dx, ex)
-mp = mp(cx, dx, ex)
+if cx==0 and dx==0:#People who don't want to install these mod should rewrite this part.
+    try:
+        from MEmod import *
+        md = md(ex)
+        md1 = md1(ex)
+        md2 = md2(ex)
+        mp = mp(ex)
+    except:
+        md = md(cx, dx, ex)
+        md1 = md1(cx, dx, ex)
+        md2 = md2(cx, dx, ex)
+        mp = mp(cx, dx, ex)
+elif dx==0 and ex==0:
+    try:
+        from MCmod import *
+        md = md(cx)
+        md1 = md1(cx)
+        md2 = md2(cx)
+        mp = mp(cx)
+    except:
+        md = md(cx, dx, ex)
+        md1 = md1(cx, dx, ex)
+        md2 = md2(cx, dx, ex)
+        mp = mp(cx, dx, ex)
+elif cx==0 and ex==0:
+    try:
+        from MDmod import *
+        md = md(dx)
+        md1 = md1(dx)
+        md2 = md2(dx)
+        mp = mp(dx)
+    except:
+        md = md(cx, dx, ex)
+        md1 = md1(cx, dx, ex)
+        md2 = md2(cx, dx, ex)
+        mp = mp(cx, dx, ex)
+else:
+    md = md(cx, dx, ex)
+    md1 = md1(cx, dx, ex)
+    md2 = md2(cx, dx, ex)
+    mp = mp(cx, dx, ex)
 g=cx+dx+ex
 r2 = np.zeros(2**(g))
 d0 = np.full(2**(g), sys.float_info.max)
