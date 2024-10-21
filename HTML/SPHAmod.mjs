@@ -82,20 +82,40 @@ function mp(x, y, z) {
     return function pow(a, b) {
         const n = x + y + z;
         let result = new Array(Math.pow(2, n)).fill(0);
-        result[0] = Math.pow(a, b[0]);
-        for (let i = 1; i < Math.pow(2, n); i++) {
-            let term = new Array(Math.pow(2, n)).fill(0);
-            if (ps(i, x, y, z) > 0) {
-                term[0] = Math.cosh(b[i] * Math.log(a));
-                term[i] = Math.sinh(b[i] * Math.log(a));
-            } else if (ps(i, x, y, z) < 0) {
-                term[0] = Math.cos(b[i] * Math.log(a));
-                term[i] = Math.sin(b[i] * Math.log(a));
+        if (a !== 0) {
+            const abs_a = Math.abs(a);
+            const log_abs_a = Math.log(abs_a);
+            if (a > 0) {
+                result[0] = Math.pow(a, b[0]);
             } else {
-                term[0] = 1;
-                term[i] = b[i] * Math.log(a);
+                result[0] = Math.pow(-a, b[0]) * Math.cos(b[0] * Math.PI);
+                result[Math.pow(2, n-1)] = Math.pow(-a, b[0]) * Math.sin(b[0] * Math.PI);
             }
-            result = md1(x, y, z)(result, term);
+            for (let i = 1; i < Math.pow(2, n); i++) {
+                let term = new Array(Math.pow(2, n)).fill(0);
+                const ps_i = ps(i, x, y, z);
+                if (ps_i > 0) {
+                    term[0] = Math.cosh(b[i] * log_abs_a);
+                    term[i] = Math.sinh(b[i] * log_abs_a);
+                } else if (ps_i < 0) {
+                    term[0] = Math.cos(b[i] * log_abs_a);
+                    term[i] = Math.sin(b[i] * log_abs_a);
+                } else {
+                    term[0] = 1;
+                    term[i] = b[i] * log_abs_a;
+                }
+                result = md1(x, y, z)(result, term);
+                if (a < 0) {
+                    const rotationFactor = Math.exp(ps_i * Math.PI * b[i]);
+                    result = result.map(v => v * rotationFactor);
+                }
+            }
+        } else {
+            if (b.every(v => v === 0)) {
+                result[0] = 1;
+            } else {
+                result[0] = 0;
+            }
         }
         return result;
     };
