@@ -1,6 +1,6 @@
 #The iteration order is E=>D=>C
 import numpy as np
-from math import cosh,sinh,cos,sin,log
+from math import cosh,sinh,cos,sin,log,e,pi
 def md(x, y, z):
     """Creating SPHA"""
     return lambda *args: np.array(args[:2**(x+y+z)])
@@ -14,8 +14,7 @@ def md1(x, y, z):
             elif y == 1 : return np.array([a[0]*b[0] + a[1]*b[1], a[0]*b[1] + a[1]*b[0]])
             else : return np.array([a[0]*b[0], a[0]*b[1] + a[1]*b[0]])
         else:
-            a1, a2 = a[:2**(n-1)], a[2**(n-1):]
-            b1, b2 = b[:2**(n-1)], b[2**(n-1):]
+            a1, a2, b1, b2= a[:2**(n-1)], a[2**(n-1):], b[:2**(n-1)], b[2**(n-1):]
             if z > 0:
                 c1 = md1(x, y, z-1)(a1, b1)
                 c2 = md1(x, y, z-1)(a1, b2) + md1(x, y, z-1)(a2, b1)
@@ -64,19 +63,28 @@ def mp(x, y, z):
     def pow(a, b):
         n = x + y + z
         result = np.zeros(2**n)
-        result[0] = a**b[0]
-        for i in range(1, 2**n):
-            term = np.zeros(2**n)
-            if ps(i, x, y, z) > 0:
-                term[0] = cosh(b[i] * log(abs(a)))
-                term[i] = sinh(b[i] * log(abs(a)))
-            elif ps(i, x, y, z) < 0:
-                term[0] = cos(b[i] * log(abs(a)))
-                term[i] = sin(b[i] * log(abs(a)))
+        if a != 0:
+            abs_a = abs(a)
+            log_abs_a = log(abs_a)
+            if a > 0 : result[0] = a**b[0]
             else:
-                term[0] = 1
-                if a!=0:
-                    term[i] = b[i] * log(a)
-            result = md1(x, y, z)(result, term)
+                result[0] = abs_a**b[0] * cos(b[0]*pi)
+                result[2**(n-1)] = abs_a**b[0] * sin(b[0]*pi)
+            for i in range(1, 2**n):
+                term = np.zeros(2**n)
+                ps_i = ps(i, x, y, z)
+                if ps_i > 0:
+                    term[0] = cosh(b[i] * log_abs_a)
+                    term[i] = sinh(b[i] * log_abs_a)
+                elif ps_i < 0:
+                    term[0] = cos(b[i] * log_abs_a)
+                    term[i] = sin(b[i] * log_abs_a)
+                else:
+                    term[0] = 1
+                    term[i] = b[i] * log_abs_a
+                result = md1(x, y, z)(result, term)
+                if a < 0 : result *= e**(ps_i * pi * b[i])
+        else:
+            if np.all(b == 0) : result[0] = 1
         return result
     return pow
