@@ -1,6 +1,6 @@
 f = open("D:\Programming\python\Bs.txt", 'r')#remember to change the file address
 from SPHAmod import *
-from math import *
+from math import ceil,factorial
 from scipy.special import zeta
 import os,sys
 n = k = l = cx = dx = ex = ""
@@ -15,11 +15,8 @@ while not isinstance(n, float):
         if n == "exit" or n == "cls" or __file__.replace('\\', '/') in n:
             os._exit(0)
         n = float(n)
-        if n <= 0:
-            n = ""
-            raise ValueError
     except:
-        print("upper bound of summation must be a non-negetive number.")
+        print("upper bound of summation must be a real number.")
 while not isinstance(cx, int) or not isinstance(dx, int) or not isinstance(ex, int):
     try:
         cdex = input("field num (three non-negative integers:cx,dx,ex) (enter 'exit' or 'cls' to exit)?")
@@ -31,47 +28,10 @@ while not isinstance(cx, int) or not isinstance(dx, int) or not isinstance(ex, i
             raise ValueError
     except:
         print("field num must be three non-negative integers separated by a comma.")
-if cx==0 and dx==0:#People who don't want to install these mod should rewrite this part.
-    try:
-        from MEmod import *
-        md = md(ex)
-        md1 = md1(ex)
-        md2 = md2(ex)
-        mp = mp(ex)
-    except:
-        md = md(cx, dx, ex)
-        md1 = md1(cx, dx, ex)
-        md2 = md2(cx, dx, ex)
-        mp = mp(cx, dx, ex)
-elif dx==0 and ex==0:
-    try:
-        from MCmod import *
-        md = md(cx)
-        md1 = md1(cx)
-        md2 = md2(cx)
-        mp = mp(cx)
-    except:
-        md = md(cx, dx, ex)
-        md1 = md1(cx, dx, ex)
-        md2 = md2(cx, dx, ex)
-        mp = mp(cx, dx, ex)
-elif cx==0 and ex==0:
-    try:
-        from MDmod import *
-        md = md(dx)
-        md1 = md1(dx)
-        md2 = md2(dx)
-        mp = mp(dx)
-    except:
-        md = md(cx, dx, ex)
-        md1 = md1(cx, dx, ex)
-        md2 = md2(cx, dx, ex)
-        mp = mp(cx, dx, ex)
-else:
-    md = md(cx, dx, ex)
-    md1 = md1(cx, dx, ex)
-    md2 = md2(cx, dx, ex)
-    mp = mp(cx, dx, ex)
+md = md(cx, dx, ex)
+md1 = md1(cx, dx, ex)
+md2 = md2(cx, dx, ex)
+mp = mp(cx, dx, ex)
 g=cx+dx+ex
 r2 = np.zeros(2**(g))
 d0 = np.full(2**(g), sys.float_info.max)
@@ -101,7 +61,7 @@ while not isinstance(l, int):
         print("precision must be a natural number.")
 if np.all(k[1:] == 0) and k[0]!=-1:
     r1 = md(zeta(-k[0]), *([0] * (2**(g) - 1)))
-elif k[0]==-1:
+elif np.all(k[1:] == 0) and k[0]==-1:
     r1 = md(0.577215664901532860606512090082402431042159335, *([0] * (2**(g) - 1)))
 else:
     r1 = md(*([0] * 2**(g)))
@@ -124,7 +84,9 @@ for a in range(l + 1):
                 d_temp = md1(d_temp, md(0, *k[1:]))
     else:
         d_temp = md2(d_temp, md(k[0] % 1 - int(k[0] % 1 != 0) + 1, *([0] * (2**(g) - 1))))
-        d_temp = md2(d_temp, md(1, *(k[1:] / (k[0] + 1))))
+        if k[0] != -1:
+            d_temp = md2(d_temp, md(1, *(k[1:] / (k[0] + 1))))
+        else:d_temp = md2(d_temp, md(0, *k[1:]))
     # c part
     if a == 1:
         pass
