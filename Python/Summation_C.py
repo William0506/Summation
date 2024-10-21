@@ -1,5 +1,5 @@
 f = open("D:\Programming\python\Bs.txt", 'r')#remember to change the file address
-from math import *
+from math import factorial,log,ceil
 from scipy.special import zeta
 import os
 n=k=k2=l=""
@@ -27,7 +27,7 @@ while not isinstance(k,float):
         print("power,real part must be a real number.")
 while not isinstance(k2,float):
     try:
-        k2=input("power,real part(enter 'exit' or 'cls' to exit)?")
+        k2=input("power,imaginary part(enter 'exit' or 'cls' to exit)?")
         if k2=="exit" or k2=="cls" or __file__.replace('\\','/') in k2:
             os._exit(0)
         k2=float(k2)
@@ -43,7 +43,7 @@ while not isinstance(l,int):
             l=""
             raise ValueError
         if l > 300 : l = 300
-        if k[0] % 1 == 0 and l > k[0] and k[0] > 0 and k[1] == 0 and k[2] == 0 and k[3] == 0 : l = int(k[0])
+        if k[0] % 1 == 0 and l > k and k > 0 and k2 == 0 : l = int(k)
         elif k%1==0 and l>k and k==0 : l=1
     except:
         print("precision must be a natural number.")
