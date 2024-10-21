@@ -1,5 +1,5 @@
 f = open("D:\Programming\python\Bs.txt", 'r')#remember to change the file address
-from math import *
+from math import factorial,log,ceil
 from scipy.special import zeta
 import os
 n=k=l=""
