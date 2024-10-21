@@ -157,9 +157,21 @@ int main() {
                     temp2[0] = 1;
                     d_temp_vec = spha_obj.md1(d_temp_vec, temp2);
                 } else {
-                    vector<long double> temp2 = k;
-                    temp2[0] = 0;
-                    d_temp_vec = spha_obj.md1(d_temp_vec, temp2);
+                    if (k[0] != -1) {
+                        vector<long double> temp = {fmod(k[0], 1) - (fmod(k[0], 1) != 0 ? 1 : 0) + 1};
+                        temp.resize(1 << g, 0);
+                        d_temp_vec = spha_obj.md2(d_temp_vec, temp);
+                        vector<long double> temp2 = k;
+                        for (size_t i = 1; i < temp2.size(); ++i) {
+                            temp2[i] /= (k[0] + 1);
+                        }
+                        temp2[0] = 1;
+                        d_temp_vec = spha_obj.md2(d_temp_vec, temp2);
+                    } else {
+                        vector<long double> temp2 = k;
+                        temp2[0] = 0;
+                        d_temp_vec = spha_obj.md2(d_temp_vec, temp2);
+                    }
                 }
             }
         } else {
