@@ -93,8 +93,6 @@ function calculate() {
         // c part
         if (a === 1) {
             // pass
-        } else if (a === 0 && k[0] === -1 && (g==0 || k.slice(1).every(v => v === 0))) {
-            d_temp = md1(cx, dx, ex)(d_temp, [Math.log(n), ...new Array(Math.pow(2, g) - 1).fill(0)]);
         } else if (Math.ceil(k[0]) - a > -1) {
             for (let c = 1; c < Math.ceil(k[0]) - a + 1; c++) {
                 d_temp = md1(cx, dx, ex)(d_temp, [(c + mod(k[0]) - (k[0] % 1 !== 0 ? 1 : 0) + a) / (c + mod(k[0]) - (k[0] % 1 !== 0 ? 1 : 0) + 1), ...new Array(Math.pow(2, g) - 1).fill(0)]);
