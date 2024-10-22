@@ -57,7 +57,10 @@ for a in range(l+1):
     d=B[a]/factorial(a)*n**complex(k-a+1,k2)
     #b part
     if a==0 and k==-1:
-        d=log(n)
+        if n>0:
+            d=log(n)
+        else:
+            d=float('nan')
         r1+=d
         continue
     elif a>0:

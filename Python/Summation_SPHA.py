@@ -72,7 +72,10 @@ for a in range(l + 1):
     d_temp = md1(md(*([d_temp] + [0] * (2**(g) - 1))), mp(n, md(k[0] - a + 1, *k[1:])))
     # b part
     if a == 0 and k[0] == -1 and np.all(k[1:] == 0):
-        d_temp = md(log(n), *([0] * (2**(g) - 1)))
+        if n > 0:
+            d_temp = md(log(n), *([0] * (2**(g) - 1)))
+        else:
+            d_temp = md(float('nan'), *([0] * (2**(g) - 1)))
         r1 = r1 + d_temp
         continue
     elif a > 0:

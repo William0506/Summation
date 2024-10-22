@@ -1,7 +1,7 @@
 f = open("D:\Programming\python\Bs.txt", 'r')#remember to change the file address
 from math import factorial,log,ceil
 from scipy.special import zeta
-import os
+import os,sys
 n=k=l=""
 B=[]
 for t in f.readlines():
@@ -38,7 +38,7 @@ while not isinstance(l,int):
     except:
         print("precision must be a natural number.")
 r2=0
-d0=10e+9999
+d0=sys.float_info.max
 if k!=-1:r1=zeta(-k)
 else:r1=0.577215664901532860606512090082402431042159335
 for a in range(l+1):
@@ -47,7 +47,10 @@ for a in range(l+1):
     d=B[a]/factorial(a)*n**(k-a+1)
     #b part
     if a==0 and k==-1:
-        d=log(n)
+        if n>0:
+            d=log(n)
+        else:
+            d=float('nan')
         r1+=d
         continue
     elif a>0:
