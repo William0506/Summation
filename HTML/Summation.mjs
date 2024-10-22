@@ -67,8 +67,12 @@ function calculate() {
         if (a === 0 && k[0] === -1 && (g==0 || k.slice(1).every(v => v === 0))) {
             if (n > 0){
                 d_temp = [Math.log(n), ...new Array(Math.pow(2, g) - 1).fill(0)];
+            } else if (n<-1) {
+                d_temp = [-Math.log(-n-1), ...new Array(Math.pow(2, g) - 1).fill(0)];
+            } else if (n === -1) {
+                d_temp = [ ...new Array(Math.pow(2, g)).fill(0)];
             } else {
-                d_temp = [Math.log(-n-1), ...new Array(Math.pow(2, g) - 1).fill(0)];
+                d_temp = [ ...new Array(Math.pow(2, g)).fill(0)];
             }
             r1 = r1.map((v, i) => v + d_temp[i]);
             continue;
@@ -108,7 +112,6 @@ function calculate() {
                 }
             }
         }
-        console.log(d_temp)
         if (d_temp.every((v, i) => Math.abs(v) >= Math.abs(d0[i])) && a > k[0]) {
             break;
         }
