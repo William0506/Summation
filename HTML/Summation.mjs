@@ -65,7 +65,11 @@ function calculate() {
         d_temp = md1(cx, dx, ex)([d_temp, ...new Array(Math.pow(2, g) - 1).fill(0)], mp(cx, dx, ex)(n, [k[0] - a + 1, ...k.slice(1)]));
         // b part
         if (a === 0 && k[0] === -1 && (g==0 || k.slice(1).every(v => v === 0))) {
-            d_temp = [Math.log(n), ...new Array(Math.pow(2, g) - 1).fill(0)];
+            if (n > 0){
+                d_temp = [Math.log(n), ...new Array(Math.pow(2, g) - 1).fill(0)];
+            } else {
+                d_temp = [Math.log(-n-1), ...new Array(Math.pow(2, g) - 1).fill(0)];
+            }
             r1 = r1.map((v, i) => v + d_temp[i]);
             continue;
         } else if (a > 0) {
