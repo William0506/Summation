@@ -108,7 +108,7 @@ function calculate() {
                 }
             }
         }
-        
+        console.log(d_temp)
         if (d_temp.every((v, i) => Math.abs(v) >= Math.abs(d0[i])) && a > k[0]) {
             break;
         }
