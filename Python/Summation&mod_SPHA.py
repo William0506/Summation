@@ -1,4 +1,4 @@
-f = open("D:\Programming\python\Bs.txt", 'r')#remember to change the file address
+f = open("D:\Programming\python\B.txt", 'r')#remember to change the file address
 import numpy as np
 from math import log,cos,sin,cosh,sinh,ceil,factorial,pi,e
 from scipy.special import zeta
