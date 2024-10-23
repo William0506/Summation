@@ -118,7 +118,7 @@ function calculate() {
         r1 = r1.map((v, i) => v + d_temp[i]);
         d0 = d_temp;
     }
-    let output = `Approximation: ${r1}\n`;
+    let output = `Approximation(By formula): ${r1}\n`;
     if (n > 0 && n % 1 === 0) {
         for (let i = 1; i <= n; i++) {
             r2 = r2.map((v, j) => v + mp(cx, dx, ex)(i, k)[j]);
