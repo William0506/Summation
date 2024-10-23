@@ -1,10 +1,7 @@
 #include "sphamod.h"
 #include <bitset>
-
 using namespace std;
-
 spha::spha(int x, int y, int z) : x(x), y(y), z(z) {}
-
 spha::spha(const vector<long double>& initialData) : data(initialData) {}
 
 vector<long double> spha::concatenate(const vector<long double>& a, const vector<long double>& b) const {
@@ -12,22 +9,18 @@ vector<long double> spha::concatenate(const vector<long double>& a, const vector
     result.insert(result.end(), b.begin(), b.end());
     return result;
 }
-
 vector<long double> spha::slice(const vector<long double>& v, int start, int end) const {
     return vector<long double>(v.begin() + start, v.begin() + end);
 }
-
 int spha::ps(int index) const {
     if (index >= (1 << (x+y))) return 0;
     string binary = bitset<32>(index).to_string().substr(32 - (x+y+z));
     int ones_count = count(binary.begin() + y + z, binary.end(), '1');
     return (ones_count % 2 == 0) ? 1 : -1;
 }
-
 vector<long double> spha::md(const vector<long double>& args) const {
     return vector<long double>(args.begin(), args.begin() + pow(2, x + y + z));
 }
-
 vector<long double> spha::md1(const vector<long double>& a, const vector<long double>& b) const {
     int n = x + y + z;
     if (n == 0) return {a[0] * b[0]};
@@ -61,7 +54,6 @@ vector<long double> spha::md1(const vector<long double>& a, const vector<long do
         return concatenate(c1, c2);
     }
 }
-
 vector<long double> spha::md2(const vector<long double>& a, const vector<long double>& b) const {
     int n = x + y + z;
     if (n == 0) return {a[0] / b[0]};
@@ -109,26 +101,21 @@ vector<long double> spha::md2(const vector<long double>& a, const vector<long do
         }
     }
 }
-
 vector<long double> spha::mp(long double a, const vector<long double>& b) const {
     int n = x + y + z;
     vector<long double> result(pow(2, n), 0);
-
     if (a != 0) {
         long double abs_a = abs(a);
         long double log_abs_a = log(abs_a);
-
         if (a > 0) {
             result[0] = pow(a, b[0]);
         } else {
             result[0] = pow(-a, b[0]) * cos(b[0] * M_PI);
             result[pow(2, n-1)] = pow(-a, b[0]) * sin(b[0] * M_PI);
         }
-
         for (int i = 1; i < pow(2, n); i++) {
             vector<long double> term(pow(2, n), 0);
             int ps_i = ps(i);
-
             if (ps_i > 0) {
                 term[0] = cosh(b[i] * log_abs_a);
                 term[i] = sinh(b[i] * log_abs_a);
@@ -139,9 +126,7 @@ vector<long double> spha::mp(long double a, const vector<long double>& b) const 
                 term[0] = 1;
                 term[i] = b[i] * log_abs_a;
             }
-
             result = md1(result, term);
-
             if (a < 0) {
                 long double rotationFactor = exp(ps_i * M_PI * b[i]);
                 for (auto& v : result) {
@@ -156,10 +141,8 @@ vector<long double> spha::mp(long double a, const vector<long double>& b) const 
             result[0] = 0;
         }
     }
-
     return result;
 }
-
 spha& spha::operator=(const spha& other) {
     if (this != &other) {
         if (data.size() != other.data.size()) {
@@ -171,7 +154,6 @@ spha& spha::operator=(const spha& other) {
     }
     return *this;
 }
-
 vector<long double> operator+(const vector<long double>& a, const vector<long double>& b) {
     if (a.size() != b.size()) {
         throw invalid_argument("Vectors must be of the same size");
@@ -182,7 +164,6 @@ vector<long double> operator+(const vector<long double>& a, const vector<long do
     }
     return result;
 }
-
 vector<long double> operator-(const vector<long double>& a, const vector<long double>& b) {
     if (a.size() != b.size()) {
         throw invalid_argument("Vectors must be of the same size");
@@ -193,7 +174,6 @@ vector<long double> operator-(const vector<long double>& a, const vector<long do
     }
     return result;
 }
-
 vector<long double> operator*(const vector<long double>& a, long double scalar) {
     vector<long double> result(a.size());
     for (size_t i = 0; i < a.size(); ++i) {
@@ -201,11 +181,9 @@ vector<long double> operator*(const vector<long double>& a, long double scalar) 
     }
     return result;
 }
-
 vector<long double> operator*(long double scalar, const vector<long double>& a) {
     return a * scalar;
 }
-
 vector<long double>& operator+=(vector<long double>& a, const vector<long double>& b) {
     if (a.size() != b.size()) {
         throw invalid_argument("Vectors must be of the same size");
@@ -215,7 +193,6 @@ vector<long double>& operator+=(vector<long double>& a, const vector<long double
     }
     return a;
 }
-
 vector<long double>& operator-=(vector<long double>& a, const vector<long double>& b) {
     if (a.size() != b.size()) {
         throw invalid_argument("Vectors must be of the same size");
@@ -225,14 +202,12 @@ vector<long double>& operator-=(vector<long double>& a, const vector<long double
     }
     return a;
 }
-
 vector<long double>& operator*=(vector<long double>& a, long double scalar) {
     for (size_t i = 0; i < a.size(); ++i) {
         a[i] *= scalar;
     }
     return a;
 }
-
 ostream& operator<<(ostream& out, const vector<long double>& a) {
     out << setprecision(15);
     out << a[0];

@@ -363,7 +363,11 @@ int main() {
         k_temp[0] -= a - 1;
         d_temp_vec = spha.md1(d_temp_vec, spha.mp(n, k_temp));
         if (a == 0 && k[0] == -1 && all_of(k.begin() + 1, k.end(), [](long double x) { return x == 0; })) {
+            if (n > 0) {
             d_temp_vec = spha.md({log(n)});
+            } else {
+                d_temp_vec = spha.md({numeric_limits<long double>::infinity()});
+            }
             r1+=d_temp_vec;
             continue;
         } else if (a > 0) {
