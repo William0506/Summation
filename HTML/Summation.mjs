@@ -68,7 +68,7 @@ function calculate() {
             if (n > 0){
                 d_temp = [Math.log(n), ...new Array(Math.pow(2, g) - 1).fill(0)];
             } else if (n<-1) {
-                d_temp = [-Math.log(-n-1), ...new Array(Math.pow(2, g) - 1).fill(0)];
+                d_temp = [Math.log(-n-1), ...new Array(Math.pow(2, g) - 1).fill(0)];
             } else if (n === -1) {
                 d_temp = [ ...new Array(Math.pow(2, g)).fill(0)];
             } else {
