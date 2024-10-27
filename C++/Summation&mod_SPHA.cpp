@@ -412,10 +412,6 @@ int main() {
             d_temp_vec = spha.md2(d_temp_vec, temp2);
         }
         if (a == 1) {
-        } else if (a == 0 && k[0] == -1 && all_of(k.begin() + 1, k.end(), [](long double x) { return x == 0; })) {
-            vector<long double> temp = {log(n)};
-            temp.resize(1 << g, 0);
-            d_temp_vec = spha.md1(d_temp_vec, temp);
         } else if (ceil(k[0]) - a > -1) {
             for (int c = 1; c <= ceil(k[0]) - a ; ++c) {
                 vector<long double> temp = {(c + fmod(k[0], 1) - (fmod(k[0], 1) == 0 ? 0 : 1) + a) / (c + fmod(k[0], 1) - (fmod(k[0], 1) == 0 ? 0 : 1) + 1)};
