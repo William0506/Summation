@@ -114,10 +114,7 @@ function calculate() {
                 throw new Error("Error: Precision must be a non-negative integer");
             }
             l = parseInt(lInput);
-            if (l < 0) {
-                l=0;
-            }
-            else if (l>300) {
+            if (l>300) {
                 l=300;
             }
         }
