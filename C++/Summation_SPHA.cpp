@@ -1,5 +1,4 @@
 #include "sphamod.h"
-#include "sphamod.cpp"
 #include <algorithm>
 #include <bitset>
 #include <cmath>
