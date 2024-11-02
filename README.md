@@ -53,6 +53,9 @@ Web implementation provides an interactive interface for SPHA calculations, util
 - `Summation.html` / `Summation.mjs`:
   - Web interface and main script for SPHA summation calculations
   - Utilizes dynamic imports for modular code structure
+  - **Default Values**:
+    - If field num is empty: For n>=0, defaults to (0,0,0); for n<0, defaults to (1,0,0)
+    - For Power input: Missing components after the real part will be filled with 0
 
 ## Technical Requirements
 
@@ -73,6 +76,9 @@ Web implementation provides an interactive interface for SPHA calculations, util
 2. Install necessary dependencies
 3. For Python scripts: Update file paths in script headers
 4. Execute scripts/programs with appropriate parameters
+
+**Important**:
+When the upper bound of summation is negative, since real powers of negative numbers may result in complex numbers, the field num, c part cannot be 0. If it is 0, it should be replaced with 1 and the imaginary part should be set to 0.
 
 ### Web Interface
 1. Access through a modern web browser
