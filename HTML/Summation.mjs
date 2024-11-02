@@ -111,8 +111,14 @@ function calculate() {
             document.getElementById('l').value = '10';
         } else {
             l = parseInt(lInput);
-            if (isNaN(l) || l < 1 || l > 300) {
-                throw new Error("Error: Precision must be between 1 and 300");
+            if (isNaN(l)) {
+                throw new Error("Error: Precision must be between 0 and 300");
+            }
+            if (l < 0) {
+                l=0;
+            }
+            else if (l>300) {
+                l=300;
             }
         }
         let r2 = new Array(Math.pow(2, g)).fill(0);
