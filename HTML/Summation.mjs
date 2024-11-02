@@ -68,6 +68,12 @@ function calculate() {
             }
             return parseInt(val.trim());
         });
+        if (n < 0 && cx === 0 && dx === 0 && ex === 0) {
+            cx = 1;
+            dx = 0;
+            ex = 0;
+            document.getElementById('cdex').value = '1,0,0';
+        }
         const kInput = document.getElementById('k').value.trim();
         if (!kInput) {
             throw new Error("Error: Power cannot be empty");
