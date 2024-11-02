@@ -39,14 +39,28 @@ function mod(a) {
 }
 function calculate() {
     const n = parseFloat(document.getElementById('n').value);
+    if (document.getElementById('cdex').value.trim() === '') {
+        if (n >= 0) {
+            document.getElementById('cdex').value = '0,0,0';
+        } else {
+            document.getElementById('cdex').value = '1,0,0';
+        }
+    }
     const [cx, dx, ex] = document.getElementById('cdex').value.split(',').map(Number);
-    const k = document.getElementById('k').value.split(',').map(Number);
+    let k = document.getElementById('k').value.split(',').map(Number);
     const l = parseInt(document.getElementById('l').value);
     if (isNaN(n) || isNaN(cx) || isNaN(dx) || isNaN(ex) || isNaN(l) || k.some(isNaN)) {
         document.getElementById('output').textContent = "Please enter valid inputs.";
         return;
     }
     const g = cx + dx + ex;
+    if (k.length < (Math.pow(2, g)) {
+        // Keep existing values and fill the rest with 0
+        k = [...k, ...new Array((Math.pow(2, g) - k.length).fill(0)];
+    } else if (k.length > (Math.pow(2, g)) {
+        // Truncate to required length
+        k = k.slice(0, (Math.pow(2, g));
+    }
     let r2 = new Array(Math.pow(2, g)).fill(0);
     let d0 = new Array(Math.pow(2, g)).fill(Number.MAX_VALUE);
     let r1;
