@@ -37,120 +37,148 @@ function zeta(s, t) {
 function mod(a) {
     return (a%1+1)%1;
 }
+function isValidNumber(str) {
+    return /^-?\d*\.?\d+$/.test(str.trim());
+}
+function isNonNegativeInteger(str) {
+    return /^\d+$/.test(str.trim());
+}
+
 function calculate() {
-    const n = parseFloat(document.getElementById('n').value);
-    if (document.getElementById('cdex').value.trim() === '') {
-        if (n >= 0) {
-            document.getElementById('cdex').value = '0,0,0';
-        } else {
-            document.getElementById('cdex').value = '1,0,0';
+    try {
+        const n = parseFloat(document.getElementById('n').value);
+        if (isNaN(n)) {
+            throw new Error("Error: Invalid upper bound");
         }
-    }
-    const [cx, dx, ex] = document.getElementById('cdex').value.split(',').map(Number);
-    let k = document.getElementById('k').value.split(',').map(Number);
-    const l = parseInt(document.getElementById('l').value);
-    if (isNaN(n) || isNaN(cx) || isNaN(dx) || isNaN(ex) || isNaN(l) || k.some(isNaN)) {
-        document.getElementById('output').textContent = "Please enter valid inputs.";
-        return;
-    }
-    const g = cx + dx + ex;
-    if (k.length < (Math.pow(2, g)) {
-        // Keep existing values and fill the rest with 0
-        k = [...k, ...new Array((Math.pow(2, g) - k.length).fill(0)];
-    } else if (k.length > (Math.pow(2, g)) {
-        // Truncate to required length
-        k = k.slice(0, (Math.pow(2, g));
-    }
-    let r2 = new Array(Math.pow(2, g)).fill(0);
-    let d0 = new Array(Math.pow(2, g)).fill(Number.MAX_VALUE);
-    let r1;
-    if ((g==0 || k.slice(1).every(v => v === 0)) && k[0] !== -1) {
-        r1 = md(cx, dx, ex)(zeta(-k[0]), ...new Array(Math.pow(2, g) - 1).fill(0));
-    } else if (k[0] === -1) {
-        r1 = md(cx, dx, ex)(0.577215664901532860606512090082402431042159335, ...new Array(Math.pow(2, g) - 1).fill(0));
-    } else {
-        r1 = new Array(Math.pow(2, g)).fill(0);
-    }
-    for (let a = 0; a <= l; a++) {
-        if (a % 2 === 1 && a !== 1) {
-            continue;
-        }
-        let d_temp = B[a] / factorial(a);
-        d_temp = md1(cx, dx, ex)([d_temp, ...new Array(Math.pow(2, g) - 1).fill(0)], mp(cx, dx, ex)(n, [k[0] - a + 1, ...k.slice(1)]));
-        // b part
-        if (a === 0 && k[0] === -1 && (g==0 || k.slice(1).every(v => v === 0))) {
-            if (n > 0){
-                d_temp = [Math.log(n), ...new Array(Math.pow(2, g) - 1).fill(0)];
-            } else if (n<-1) {
-                d_temp = [Number.NaN, ...new Array(Math.pow(2, g) - 1).fill(0)];
-            } else if (n === -1) {
-                d_temp = [ ...new Array(Math.pow(2, g)).fill(0)];
+        if (document.getElementById('cdex').value.trim() === '') {
+            if (n >= 0) {
+                document.getElementById('cdex').value = '0,0,0';
             } else {
-                d_temp = [ ...new Array(Math.pow(2, g)).fill(0)];
+                document.getElementById('cdex').value = '1,0,0';
+            }
+        }
+        const cdexInput = document.getElementById('cdex').value.trim();
+        const cdexValues = cdexInput.split(',');
+        if (cdexValues.length !== 3) {
+            throw new Error("Error: Field num must contain exactly three numbers");
+        }
+        const [cx, dx, ex] = cdexValues.map(val => {
+            if (!isNonNegativeInteger(val.trim())) {
+                throw new Error("Error: Field num must be non-negative integers");
+            }
+            return parseInt(val.trim());
+        });
+        let k = document.getElementById('k').value.split(',').map(Number);
+        const l = parseInt(document.getElementById('l').value);
+
+        if (isNaN(l) || l < 1 || l > 300) {
+            throw new Error("Error: Precision must be between 1 and 300");
+        }
+        const g = cx + dx + ex;
+        if (k.length < Math.pow(2, g)) {
+            k = [...k, ...new Array(Math.pow(2, g) - k.length).fill(0)];
+        } else if (k.length > Math.pow(2, g)) {
+            k = k.slice(0, Math.pow(2, g));
+        }
+        let r2 = new Array(Math.pow(2, g)).fill(0);
+        let d0 = new Array(Math.pow(2, g)).fill(Number.MAX_VALUE);
+        let r1;
+        if ((g === 0 || k.slice(1).every(v => v === 0)) && k[0] !== -1) {
+            r1 = md(cx, dx, ex)(zeta(-k[0]), ...new Array(Math.pow(2, g) - 1).fill(0));
+        } else if (k[0] === -1) {
+            r1 = md(cx, dx, ex)(0.577215664901532860606512090082402431042159335, 
+                               ...new Array(Math.pow(2, g) - 1).fill(0));
+        } else {
+            r1 = new Array(Math.pow(2, g)).fill(0);
+        }
+        for (let a = 0; a <= l; a++) {
+            if (a % 2 === 1 && a !== 1) {
+                continue;
+            }
+
+            let d_temp = B[a] / factorial(a);
+            d_temp = md1(cx, dx, ex)([d_temp, ...new Array(Math.pow(2, g) - 1).fill(0)], mp(cx, dx, ex)(n, [k[0] - a + 1, ...k.slice(1)]));
+            if (a === 0 && k[0] === -1 && (g === 0 || k.slice(1).every(v => v === 0))) {
+                if (n > 0) {
+                    d_temp = [Math.log(n), ...new Array(Math.pow(2, g) - 1).fill(0)];
+                } else if (n < -1) {
+                    d_temp = [Number.NaN, ...new Array(Math.pow(2, g) - 1).fill(0)];
+                } else if (n === -1) {
+                    d_temp = [...new Array(Math.pow(2, g)).fill(0)];
+                } else {
+                    d_temp = [...new Array(Math.pow(2, g)).fill(0)];
+                }
+                r1 = r1.map((v, i) => v + d_temp[i]);
+                continue;
+            } else if (a > 0) {
+                for (let b = 0; b < a - 1; b++) {
+                    d_temp = md1(cx, dx, ex)(d_temp, [a + mod(k[0]) - (k[0] % 1 !== 0 ? 1 : 0) - b, 
+                                           ...new Array(Math.pow(2, g) - 1).fill(0)]);
+                    if (k[0] !== b) {
+                        d_temp = md1(cx, dx, ex)(d_temp, [1, ...k.slice(1).map(v => v / (k[0] - b))]);
+                    } else {
+                        d_temp = md1(cx, dx, ex)(d_temp, [0, ...k.slice(1)]);
+                    }
+                }
+            } else {
+                d_temp = md2(cx, dx, ex)(d_temp, [mod(k[0]) - (k[0] % 1 !== 0 ? 1 : 0) + 1, 
+                                        ...new Array(Math.pow(2, g) - 1).fill(0)]);
+                if (k[0] !== -1) {
+                    d_temp = md2(cx, dx, ex)(d_temp, [1, ...k.slice(1).map(v => v / (k[0] + 1))]);
+                } else {
+                    d_temp = md2(cx, dx, ex)(d_temp, [0, ...k.slice(1).map(v => v)]);
+                }
+            }
+            if (a === 1) {
+            } else if (Math.ceil(k[0]) - a > -1) {
+                for (let c = 1; c < Math.ceil(k[0]) - a + 1; c++) {
+                    d_temp = md1(cx, dx, ex)(d_temp, 
+                        [(c + mod(k[0]) - (k[0] % 1 !== 0 ? 1 : 0) + a) / 
+                         (c + mod(k[0]) - (k[0] % 1 !== 0 ? 1 : 0) + 1), 
+                         ...new Array(Math.pow(2, g) - 1).fill(0)]);
+                }
+            } else {
+                for (let c = Math.ceil(k[0]) - a + 1; c < 1; c++) {
+                    if (c === -a && k[0] % 1 === 0) {
+                        d_temp = md2(cx, dx, ex)(d_temp, [1 - a, ...new Array(Math.pow(2, g) - 1).fill(0)]);
+                    } else if (c === -1 && k[0] % 1 === 0) {
+                        d_temp = md1(cx, dx, ex)(d_temp, [a - 1, ...new Array(Math.pow(2, g) - 1).fill(0)]);
+                    } else {
+                        d_temp = md2(cx, dx, ex)(d_temp, 
+                            [(c + mod(k[0]) - (k[0] % 1 !== 0 ? 1 : 0) + a) / 
+                             (c + mod(k[0]) - (k[0] % 1 !== 0 ? 1 : 0) + 1), 
+                             ...new Array(Math.pow(2, g) - 1).fill(0)]);
+                    }
+                }
+            }
+            if (d_temp.every((v, i) => Math.abs(v) >= Math.abs(d0[i])) && a > k[0]) {
+                break;
             }
             r1 = r1.map((v, i) => v + d_temp[i]);
-            continue;
-        } else if (a > 0) {
-            for (let b = 0; b < a - 1; b++) {
-                d_temp = md1(cx, dx, ex)(d_temp, [a + mod(k[0]) - (k[0] % 1 !== 0 ? 1 : 0) - b, ...new Array(Math.pow(2, g) - 1).fill(0)]);
-                if (k[0] !== b) {
-                    d_temp = md1(cx, dx, ex)(d_temp, [1, ...k.slice(1).map(v => v / (k[0] - b))]);
-                } else {
-                    d_temp = md1(cx, dx, ex)(d_temp, [0, ...k.slice(1)]);
-                }
+            d0 = d_temp;
+        }
+        if (n > 0 && n % 1 === 0) {
+            for (let i = 1; i <= n; i++) {
+                r2 = r2.map((v, j) => v + mp(cx, dx, ex)(i, k)[j]);
+            }
+        } else if (n % 1 === 0) {
+            if (k[0] === 0 && (g === 0 || k.slice(1).every(v => v === 0))) {
+                r2[0] -= 1;
+            }
+            for (let i = n + 1; i < 0; i++) {
+                r2 = r2.map((v, j) => v - mp(cx, dx, ex)(i, k)[j]);
             }
         } else {
-            d_temp = md2(cx, dx, ex)(d_temp, [mod(k[0]) - (k[0] % 1 !== 0 ? 1 : 0) + 1, ...new Array(Math.pow(2, g) - 1).fill(0)]);
-            if (k[0] !== -1) {
-            d_temp = md2(cx, dx, ex)(d_temp, [1, ...k.slice(1).map(v => v / (k[0] + 1))]);
-            }
-            else {
-            d_temp = md2(cx, dx, ex)(d_temp, [0, ...k.slice(1).map(v => v)]);
-            }
+            r2 = null;
         }
-        // c part
-        if (a === 1) {
-            // pass
-        } else if (Math.ceil(k[0]) - a > -1) {
-            for (let c = 1; c < Math.ceil(k[0]) - a + 1; c++) {
-                d_temp = md1(cx, dx, ex)(d_temp, [(c + mod(k[0]) - (k[0] % 1 !== 0 ? 1 : 0) + a) / (c + mod(k[0]) - (k[0] % 1 !== 0 ? 1 : 0) + 1), ...new Array(Math.pow(2, g) - 1).fill(0)]);
-            }
-        } else {
-            for (let c = Math.ceil(k[0]) - a + 1; c < 1; c++) {
-                if (c === -a && k[0] % 1 === 0) {
-                    d_temp = md2(cx, dx, ex)(d_temp, [1 - a, ...new Array(Math.pow(2, g) - 1).fill(0)]);
-                } else if (c === -1 && k[0] % 1 === 0) {
-                    d_temp = md1(cx, dx, ex)(d_temp, [a - 1, ...new Array(Math.pow(2, g) - 1).fill(0)]);
-                } else {
-                    d_temp = md2(cx, dx, ex)(d_temp, [(c + mod(k[0]) - (k[0] % 1 !== 0 ? 1 : 0) + a) / (c + mod(k[0]) - (k[0] % 1 !== 0 ? 1 : 0) + 1), ...new Array(Math.pow(2, g) - 1).fill(0)]);
-                }
-            }
+        let output = `Approximation(By formula): ${r1}\n`;
+        output += `Actual: ${r2}\n`;
+        if (r2 !== null) {
+            const error = r1.map((v, i) => v - r2[i]);
+            output += `Error: ${error}`;
         }
-        if (d_temp.every((v, i) => Math.abs(v) >= Math.abs(d0[i])) && a > k[0]) {
-            break;
-        }
-        r1 = r1.map((v, i) => v + d_temp[i]);
-        d0 = d_temp;
+        document.getElementById('output').textContent = output;
+    } catch (error) {
+        document.getElementById('output').textContent = error.message;
     }
-    let output = `Approximation(By formula): ${r1}\n`;
-    if (n > 0 && n % 1 === 0) {
-        for (let i = 1; i <= n; i++) {
-            r2 = r2.map((v, j) => v + mp(cx, dx, ex)(i, k)[j]);
-        }
-    } else if (n % 1 === 0) {
-        if (k[0]===0 && (g==0 || k.slice(1).every(v => v === 0))){
-            r2[0] -= 1;
-        }
-        for (let i = n + 1; i < 0; i++) {
-            r2 = r2.map((v, j) => v - mp(cx, dx, ex)(i, k)[j]);
-        }
-    } else {
-        r2 = null;
-    }
-    output += `Actual: ${r2}\n`;
-    if (r2 !== null) {
-        const error = r1.map((v, i) => v - r2[i]);
-        output += `Error: ${error}`;
-    }
-    document.getElementById('output').textContent = output;
 }
