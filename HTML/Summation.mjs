@@ -68,7 +68,16 @@ function calculate() {
             }
             return parseInt(val.trim());
         });
-        let k = document.getElementById('k').value.split(',').map(Number);
+        const kInput = document.getElementById('k').value.trim();
+        if (!kInput || kInput.startsWith(',')) {
+            throw new Error("Error: The first component (real part) cannot be empty");
+        }
+        let k = kInput.split(',').map(val => {
+            if (!isValidNumber(val.trim()) && val.trim() !== '') {
+                throw new Error("Error: Invalid power component - must be numbers");
+            }
+            return val.trim() === '' ? 0 : Number(val.trim());
+        });
         const l = parseInt(document.getElementById('l').value);
 
         if (isNaN(l) || l < 1 || l > 300) {
