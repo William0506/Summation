@@ -116,6 +116,7 @@ function calculate() {
             l = parseInt(lInput);
             if (l>300) {
                 l=300;
+                document.getElementById('l').value = '300';
             }
         }
         let r2 = new Array(Math.pow(2, g)).fill(0);
