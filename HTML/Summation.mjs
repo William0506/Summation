@@ -50,23 +50,17 @@ function calculate() {
         if (isNaN(n)) {
             throw new Error("Error: Invalid upper bound");
         }
-        if (document.getElementById('cdex').value.trim() === '') {
-            if (n >= 0) {
-                document.getElementById('cdex').value = '0,0,0';
-            } else {
-                document.getElementById('cdex').value = '1,0,0';
-            }
-        }
         const cdexInput = document.getElementById('cdex').value.trim();
-        const cdexValues = cdexInput.split(',');
-        if (cdexValues.length !== 3) {
-            throw new Error("Error: Field num must contain exactly three numbers");
+        if (cdexInput === '') {
+            document.getElementById('cdex').value = n >= 0 ? '0,0,0' : '1,0,0';
         }
-        const [cx, dx, ex] = cdexValues.map(val => {
-            if (!isNonNegativeInteger(val.trim())) {
-                throw new Error("Error: Field num must be non-negative integers");
+        let [cx, dx, ex] = document.getElementById('cdex').value.split(',').map(x => {
+            if (x.trim() === '') return 0;
+            const num = parseInt(x);
+            if (isNaN(num) || num < 0) {
+                throw new Error("Error: Field numbers must be non-negative integers");
             }
-            return parseInt(val.trim());
+            return num;
         });
         if (n < 0 && cx === 0 && dx === 0 && ex === 0) {
             cx = 1;
