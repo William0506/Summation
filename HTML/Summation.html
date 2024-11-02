@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summation Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 5px;
+        }
+        #cdex {
+            width: 200px;
+        }
+        #k {
+            width: 300px;
+        }
+        #output {
+            white-space: pre-wrap;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>SPHA Calculator</h1>
+    <div>
+        <label for="n">Upper bound of summation:</label>
+        <input type="text" id="n" placeholder="A real number">
+    </div>
+    <div>
+        <label for="cdex">Field num (c,d,e):</label>
+        <input type="text" id="cdex" placeholder="Three non-negetive integers">
+    </div>
+    <div>
+        <label for="k">Power:</label>
+        <input type="text" id="k" placeholder="Have 2**(c,d,e) parts">
+    </div>
+    <div>
+        <label for="l">Precision:</label>
+        <input type="text" id="l" placeholder="0~300">
+    </div>
+    <button onclick="calculate()">Calculate</button>
+    <div id="output"></div>
+    <script type="module">
+        import { md, md1, md2, mp } from './SPHAmod.mjs';
+        window.md = md;
+        window.md1 = md1;
+        window.md2 = md2;
+        window.mp = mp;
+    </script>
+    <script src="Summation.mjs"></script>
+</body>
+</html>
