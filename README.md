@@ -28,7 +28,7 @@ The Python scripts are designed for flexibility and ease of use in research envi
 
 The C++ implementation offers high-performance computations, suitable for large-scale calculations. Requires C++17 compatible compiler.
 
-- `B.cpp` / `B.exe`: 
+- `B.cpp`: 
   - Bernoulli number calculator using arbitrary-precision arithmetic.
 - `B.txt`: Precomputed Bernoulli number library (up to B_1000).
 - `SPHAmod.cpp` / `SPHAmod.h`: 
