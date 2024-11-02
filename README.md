@@ -4,7 +4,7 @@
 
 This repository contains the supplementary computational tools and implementations for the research project "A Summation Formula for Algebraic Functions and Some Introduction to General Perfect Hypercomplex Algebras", presented at the 2025 Taiwan International Science Fair.
 
-The project explores novel summation formulas for algebraic functions and delves into the properties of General Perfect Hypercomplex Algebras (GPHA).
+The project explores novel summation formulas for algebraic functions and delves into the properties of General Perfect Hypercomplex Algebras (GPHA) and Standard Perfect Hypercomplex Algebras (SPHA).
 
 ## Repository Structure and Implementation Details
 
