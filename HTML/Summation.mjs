@@ -104,9 +104,16 @@ function calculate() {
             k = [...k, ...new Array(requiredLength - k.length).fill(0)];
         }
         document.getElementById('k').value = k.join(',');
-        const l = parseInt(document.getElementById('l').value);
-        if (isNaN(l) || l < 1 || l > 300) {
-            throw new Error("Error: Precision must be between 1 and 300");
+        const lInput = document.getElementById('l').value.trim();
+        let l;
+        if (lInput === '') {
+            l = 10;
+            document.getElementById('l').value = '10';
+        } else {
+            l = parseInt(lInput);
+            if (isNaN(l) || l < 1 || l > 300) {
+                throw new Error("Error: Precision must be between 1 and 300");
+            }
         }
         let r2 = new Array(Math.pow(2, g)).fill(0);
         let d0 = new Array(Math.pow(2, g)).fill(Number.MAX_VALUE);
