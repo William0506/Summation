@@ -110,10 +110,10 @@ function calculate() {
             l = 10;
             document.getElementById('l').value = '10';
         } else {
-            l = parseInt(lInput);
-            if (isNaN(l)) {
-                throw new Error("Error: Precision must be between 0 and 300");
+            if (!lInput.match(/^\d+$/)) {
+                throw new Error("Error: Precision must be a non-negative integer");
             }
+            l = parseInt(lInput);
             if (l < 0) {
                 l=0;
             }
