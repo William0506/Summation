@@ -69,25 +69,44 @@ function calculate() {
             return parseInt(val.trim());
         });
         const kInput = document.getElementById('k').value.trim();
-        if (!kInput || kInput.startsWith(',')) {
-            throw new Error("Error: The first component (real part) cannot be empty");
+        if (!kInput) {
+            throw new Error("Error: Power cannot be empty");
         }
-        let k = kInput.split(',').map(val => {
-            if (!isValidNumber(val.trim()) && val.trim() !== '') {
-                throw new Error("Error: Invalid power component - must be numbers");
+        if (kInput.startsWith(',')) {
+            throw new Error("Error: The first component of power cannot be empty");
+        }
+        let normalizedInput = kInput;
+        while (normalizedInput.includes(',,')) {
+            normalizedInput = normalizedInput.replace(',,', ',0,');
+        }
+        if (normalizedInput.endsWith(',')) {
+            normalizedInput += '0';
+        }
+        let k = normalizedInput.split(',').map((val, index) => {
+            const trimmedVal = val.trim();
+            if (trimmedVal === '') {
+                if (index === 0) {
+                    throw new Error("Error: The first component of power cannot be empty");
+                }
+                return 0;
             }
-            return val.trim() === '' ? 0 : Number(val.trim());
+            const num = Number(trimmedVal);
+            if (!isFinite(num) || isNaN(num)) {
+                throw new Error(`Error: Power component '${trimmedVal}' at position ${index + 1} is not a valid real number`);
+            }
+            return num;
         });
+        const g = cx + dx + ex;
+        const requiredLength = Math.pow(2, g);
+        if (k.length > requiredLength) {
+            k = k.slice(0, requiredLength);
+        } else if (k.length < requiredLength) {
+            k = [...k, ...new Array(requiredLength - k.length).fill(0)];
+        }
+        document.getElementById('k').value = k.join(',');
         const l = parseInt(document.getElementById('l').value);
-
         if (isNaN(l) || l < 1 || l > 300) {
             throw new Error("Error: Precision must be between 1 and 300");
-        }
-        const g = cx + dx + ex;
-        if (k.length < Math.pow(2, g)) {
-            k = [...k, ...new Array(Math.pow(2, g) - k.length).fill(0)];
-        } else if (k.length > Math.pow(2, g)) {
-            k = k.slice(0, Math.pow(2, g));
         }
         let r2 = new Array(Math.pow(2, g)).fill(0);
         let d0 = new Array(Math.pow(2, g)).fill(Number.MAX_VALUE);
