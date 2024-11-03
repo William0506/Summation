@@ -151,6 +151,7 @@ while not isinstance(l, int):
         if l > 300: l = 300
         if k[0] % 1 == 0 and l > k[0] and k[0] > 0 and all(k[1:] == 0):
             l = int(k[0])+1
+        elif l>k[0] and k[0]==0 and np.all(k[1:] == 0): l=1
     except:
         print("precision must be a natural number.")
 if np.all(k[1:] == 0) and k[0]!=-1:
@@ -215,3 +216,4 @@ else:r2 = None
 print("Actual:", r2)
 if r2 is not None:
     print("Error:", r1 - r2)
+    
