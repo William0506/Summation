@@ -1,4 +1,4 @@
-f = open("D:\Programming\python\B.txt", 'r')#remember to change the file address
+f = open("D:\Programming\python\Bs.txt", 'r')#remember to change the file address
 import numpy as np
 from math import log,cos,sin,cosh,sinh,ceil,factorial,pi,e
 from scipy.special import zeta
@@ -115,11 +115,18 @@ while not isinstance(cx, int) or not isinstance(dx, int) or not isinstance(ex, i
             raise ValueError
     except:
         print("field num must be three non-negative integers separated by a comma.")
-md = md(cx, dx, ex)
-md1 = md1(cx, dx, ex)
-md2 = md2(cx, dx, ex)
-mp = mp(cx, dx, ex)
-g=cx+dx+ex
+if n < 0 and cx == dx == ex == 0:
+    md_ = md(1, 0, 0)
+    md1_ = md1(1, 0, 0)
+    md2_ = md2(1, 0, 0)
+    mp_ = mp(1, 0, 0)
+    g=1
+else:
+    md_ = md(cx, dx, ex)
+    md1_ = md1(cx, dx, ex)
+    md2_ = md2(cx, dx, ex)
+    mp_ = mp(cx, dx, ex)
+    g=cx+dx+ex
 r2 = np.zeros(2**(g))
 d0 = np.full(2**(g), sys.float_info.max)
 while not isinstance(k, np.ndarray) or len(k) != 2**(g):
@@ -127,7 +134,7 @@ while not isinstance(k, np.ndarray) or len(k) != 2**(g):
         k_input = input(f"power(Using ',' to separate {2**(g)} parts.)(enter 'exit' or 'cls' to exit)?")
         if k_input == "exit" or k_input == "cls" or __file__.replace('\\', '/') in k_input:
             os._exit(0)
-        k = md(*map(float, k_input.split(',')))
+        k = md_(*map(float, k_input.split(',')))
         if len(k) != 2**(g):
             raise ValueError
     except:
@@ -147,52 +154,52 @@ while not isinstance(l, int):
     except:
         print("precision must be a natural number.")
 if np.all(k[1:] == 0) and k[0]!=-1:
-    r1 = md(zeta(-k[0]), *([0] * (2**(g) - 1)))
+    r1 = md_(zeta(-k[0]), *([0] * (2**(g) - 1)))
 elif k[0]==-1:
-    r1 = md(0.577215664901532860606512090082402431042159335, *([0] * (2**(g) - 1)))
+    r1 = md_(0.577215664901532860606512090082402431042159335, *([0] * (2**(g) - 1)))
 else:
-    r1 = md(*([0] * 2**(g)))
+    r1 = md_(*([0] * 2**(g)))
 for a in range(l + 1):
     if a % 2 == 1 and a != 1:
         continue
     d_temp = B[a] / factorial(a)
-    d_temp = md1(md(*([d_temp] + [0] * (2**(g) - 1))), mp(n, md(k[0] - a + 1, *k[1:])))
+    d_temp = md1_(md_(*([d_temp] + [0] * (2**(g) - 1))), mp_(n, md_(k[0] - a + 1, *k[1:])))
     # b part
     if a == 0 and k[0] == -1 and np.all(k[1:] == 0):
         if n > 0:
-            d_temp = md(log(n), *([0] * (2**(g) - 1)))
+            d_temp = md_(log(n), *([0] * (2**(g) - 1)))
         else:
-            d_temp = md(float('nan'), *([0] * (2**(g) - 1)))
+            d_temp = md_(float('nan'), *([0] * (2**(g) - 1)))
         r1 = r1 + d_temp
         continue
     elif a > 0:
         for b in range(a - 1):
-            d_temp = md1(d_temp, md(a + k[0] % 1 - int(k[0] % 1 != 0) - b, *([0] * (2**(g) - 1))))
+            d_temp = md1_(d_temp, md_(a + k[0] % 1 - int(k[0] % 1 != 0) - b, *([0] * (2**(g) - 1))))
             if k[0] != b:
-                d_temp = md1(d_temp, md(1, *(k[1:] / (k[0] - b))))
+                d_temp = md1_(d_temp, md_(1, *(k[1:] / (k[0] - b))))
             else:
-                d_temp = md1(d_temp, md(0, *k[1:]))
+                d_temp = md1_(d_temp, md_(0, *k[1:]))
     else:
-        d_temp = md2(d_temp, md(k[0] % 1 - int(k[0] % 1 != 0) + 1, *([0] * (2**(g) - 1))))
+        d_temp = md2_(d_temp, md_(k[0] % 1 - int(k[0] % 1 != 0) + 1, *([0] * (2**(g) - 1))))
         if k[0] != -1:
-            d_temp = md2(d_temp, md(1, *(k[1:] / (k[0] + 1))))
-        else:d_temp = md2(d_temp, md(0, *k[1:]))
+            d_temp = md2_(d_temp, md_(1, *(k[1:] / (k[0] + 1))))
+        else:d_temp = md2_(d_temp, md_(0, *k[1:]))
     # c part
     if a == 1:
         pass
     elif a == 0 and k[0] == -1 and np.all(k[1:] == 0):
-        d_temp = md1(d_temp, md(log(n), *([0] * (2**(g) - 1))))
+        d_temp = md1_(d_temp, md_(log(n), *([0] * (2**(g) - 1))))
     elif ceil(k[0]) - a > -1:
         for c in range(1, ceil(k[0]) - a + 1):
-            d_temp = md1(d_temp, md((c + k[0] % 1 - int(k[0] % 1 != 0) + a) / (c + k[0] % 1 - int(k[0] % 1 != 0) + 1), *([0] * (2**(g) - 1))))
+            d_temp = md1_(d_temp, md_((c + k[0] % 1 - int(k[0] % 1 != 0) + a) / (c + k[0] % 1 - int(k[0] % 1 != 0) + 1), *([0] * (2**(g) - 1))))
     else:
         for c in range(ceil(k[0]) - a + 1, 1):
             if c == -a and k[0] % 1 == 0:
-                d_temp = md2(d_temp, md(1 - a, *([0] * (2**(g) - 1))))
+                d_temp = md2_(d_temp, md_(1 - a, *([0] * (2**(g) - 1))))
             elif c == -1 and k[0] % 1 == 0:
-                d_temp = md1(d_temp, md(a - 1, *([0] * (2**(g) - 1))))
+                d_temp = md1_(d_temp, md_(a - 1, *([0] * (2**(g) - 1))))
             else:
-                d_temp = md2(d_temp, md((c + k[0] % 1 - int(k[0] % 1 != 0) + a) / (c + k[0] % 1 - int(k[0] % 1 != 0) + 1), *([0] * (2**(g) - 1))))
+                d_temp = md2_(d_temp, md_((c + k[0] % 1 - int(k[0] % 1 != 0) + a) / (c + k[0] % 1 - int(k[0] % 1 != 0) + 1), *([0] * (2**(g) - 1))))
     if np.all(np.abs(d_temp) >= np.abs(d0)) and a > k[0]:
         break
     r1 = r1 + d_temp
@@ -200,10 +207,10 @@ for a in range(l + 1):
 print("Approximation:", r1)
 if n > 0 and n % 1 == 0:
     for i in range(1, int(n + 1)):
-        r2 = r2 + mp(i, k)
+        r2 = r2 + mp_(i, k)
 elif n % 1 == 0:
     for i in range(int(n + 1), 1):
-        r2 = r2 - mp(i, k)
+        r2 = r2 - mp_(i, k)
 else:r2 = None
 print("Actual:", r2)
 if r2 is not None:
