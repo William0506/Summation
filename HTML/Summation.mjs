@@ -62,7 +62,7 @@ function calculate() {
             }
             return num;
         });
-        if (n < 0 && cx === 0 && dx === 0 && ex === 0) {
+        if ( n < 0 && cx === 0 && dx === 0 && ex === 0 ) {
             cx = 1;
             dx = 0;
             ex = 0;
