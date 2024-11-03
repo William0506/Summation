@@ -55,7 +55,9 @@ Web implementation provides an interactive interface for SPHA calculations, util
   - Utilizes dynamic imports for modular code structure
   - **Default Values**:
     - If field num is empty: For n>=0, defaults to (0,0,0); for n<0, defaults to (1,0,0)
-    - For Power input: Missing components after the real part will be filled with 0
+    - For Power input: Missing parts after the real part will be filled with 0
+    - Excess terms in Power input will be automatically truncated
+    - Precision defaults to 10; if exceeds maximum limit (300), automatically set to 300
 
 ## Technical Requirements
 
@@ -78,7 +80,7 @@ Web implementation provides an interactive interface for SPHA calculations, util
 4. Execute scripts/programs with appropriate parameters
 
 **Important**:
-When the upper bound of summation is negative, since real powers of negative numbers may result in complex numbers, the field num, c part cannot be 0. If it is 0, it should be replaced with 1 and the imaginary part should be set to 0.
+Since negative numbers raised to real powers may result in complex numbers, when the upperbound of summation is negative, the field num cannot be set to (0,0,0). In such cases, the program will automatically set it to (1,0,0).
 
 ### Web Interface
 1. Access through a modern web browser
