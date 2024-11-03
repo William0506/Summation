@@ -34,7 +34,7 @@ while not isinstance(l,int):
             raise ValueError
         if l>300 : l=300
         if k%1==0 and l>k and k>0 : l=int(k)+1
-        elif k%1==0 and l>k and k==0 : l=1
+        elif l>k and k==0 : l=1
     except:
         print("precision must be a natural number.")
 r2=0
