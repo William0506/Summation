@@ -28,11 +28,18 @@ while not isinstance(cx, int) or not isinstance(dx, int) or not isinstance(ex, i
             raise ValueError
     except:
         print("field num must be three non-negative integers separated by a comma.")
-md = md(cx, dx, ex)
-md1 = md1(cx, dx, ex)
-md2 = md2(cx, dx, ex)
-mp = mp(cx, dx, ex)
-g=cx+dx+ex
+if n < 0 and cx == dx == ex == 0:
+    md = md(1, 0, 0)
+    md1 = md1(1, 0, 0)
+    md2 = md2(1, 0, 0)
+    mp = mp(1, 0, 0)
+    g=1
+else:
+    md = md(cx, dx, ex)
+    md1 = md1(cx, dx, ex)
+    md2 = md2(cx, dx, ex)
+    mp = mp(cx, dx, ex)
+    g=cx+dx+ex
 r2 = np.zeros(2**(g))
 d0 = np.full(2**(g), sys.float_info.max)
 while not isinstance(k, np.ndarray) or len(k) != 2**(g):
