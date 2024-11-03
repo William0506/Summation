@@ -1,4 +1,4 @@
-f = open("D:\Programming\python\B.txt", 'r')#remember to change the file address
+f = open("D:\Programming\python\Bs.txt", 'r')#remember to change the file address
 from math import factorial,log,ceil
 from scipy.special import zeta
 import os,sys
@@ -21,6 +21,9 @@ while not isinstance(k,float):
         if k=="exit" or k=="cls" or __file__.replace('\\','/') in k:
             os._exit(0)
         k=float(k)
+        if n<0 and k%1!=0:
+            k=""
+            print("power must be an integer when upper bound of summation is a negative number.")
     except:
         print("power must be a real number.")
 while not isinstance(l,int):
@@ -34,7 +37,7 @@ while not isinstance(l,int):
             raise ValueError
         if l>300 : l=300
         if k%1==0 and l>k and k>0 : l=int(k)+1
-        elif l>k and k==0 : l=1
+        elif k%1==0 and l>k and k==0 : l=1
     except:
         print("precision must be a natural number.")
 r2=0
@@ -83,7 +86,9 @@ if n>0 and n%1==0:
     for i in range(1,int(n+1)):
         r2+=i**k
 elif n%1==0:
-    for i in range(int(n+1),1):
+    if k==0 and n<0:
+        r2-=1
+    for i in range(int(n+1),0):
         r2-=i**k
 else:
     r2=None
