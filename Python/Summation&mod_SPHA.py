@@ -148,7 +148,7 @@ while not isinstance(l, int):
         if l < 0:
             l = ""
             raise ValueError
-        if l > 117: l = 117
+        if l > 300: l = 300
         if k[0] % 1 == 0 and l > k[0] and k[0] > 0 and all(k[1:] == 0):
             l = int(k[0])+1
     except:
