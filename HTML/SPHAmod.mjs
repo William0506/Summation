@@ -120,4 +120,4 @@ function mp(x, y, z) {
         return result;
     };
 }
-export { md, md1, md2, mp } ;
+export { md, md1, md2, mp };
