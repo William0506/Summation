@@ -303,6 +303,9 @@ int main() {
         }
         cout << "field num must be three non-negative integers separated by a comma." << endl;
     }
+    if (n < 0 && cx == 0 && dx == 0 && ex == 0) {
+        cx = 1;
+    }
     spha spha(cx, dx, ex);
     int g = cx + dx + ex;
     vector<long double> r2(1 << g, 0);
@@ -335,7 +338,7 @@ int main() {
         try {
             l = stoi(input);
             if (l <= 0) throw invalid_argument("Non-positive value");
-            if (l > 1500) l = 1500;
+            if (l > 1000) l = 1000;
             if (fmod(k[0], 1) == 0 && l > k[0] && k[0] > 0 && all_of(k.begin() + 1, k.end(), [](long double x) { return x == 0; })) {
                 l = static_cast<int>(k[0]) + 1;
             }
@@ -412,6 +415,10 @@ int main() {
             d_temp_vec = spha.md2(d_temp_vec, temp2);
         }
         if (a == 1) {
+        } else if (a == 0 && k[0] == -1 && all_of(k.begin() + 1, k.end(), [](long double x) { return x == 0; })) {
+            vector<long double> temp = {log(n)};
+            temp.resize(1 << g, 0);
+            d_temp_vec = spha.md1(d_temp_vec, temp);
         } else if (ceil(k[0]) - a > -1) {
             for (int c = 1; c <= ceil(k[0]) - a ; ++c) {
                 vector<long double> temp = {(c + fmod(k[0], 1) - (fmod(k[0], 1) == 0 ? 0 : 1) + a) / (c + fmod(k[0], 1) - (fmod(k[0], 1) == 0 ? 0 : 1) + 1)};

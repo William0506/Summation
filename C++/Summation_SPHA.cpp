@@ -80,6 +80,9 @@ int main() {
         }
         cout << "field num must be three non-negative integers separated by a comma." << endl;
     }
+    if (n < 0 && cx == 0 && dx == 0 && ex == 0) {
+        cx = 1;
+    }
     spha spha_obj(cx, dx, ex);
     int g = cx + dx + ex;
     vector<long double> r2(1 << g, 0);
@@ -111,8 +114,8 @@ int main() {
         getline(cin, input);
         try {
             l = stoi(input);
-            if (l <= 0) throw invalid_argument("Non-positive value");
-            if (l > 1500) l = 1500;
+            if (l < 0) throw invalid_argument("Negative value");
+            if (l > 1000) l = 1000;
             if (fmod(k[0], 1) == 0 && l > k[0] && k[0] > 0 && all_of(k.begin() + 1, k.end(), [](long double x) { return x == 0; })) {
                 l = static_cast<int>(k[0]) + 1;
             }
