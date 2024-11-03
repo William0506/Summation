@@ -1,4 +1,4 @@
-f = open("D:\Programming\python\B.txt", 'r')#remember to change the file address
+f = open("D:\Programming\python\Bs.txt", 'r')#remember to change the file address
 from SPHAmod import *
 from math import ceil,factorial
 from scipy.special import zeta
