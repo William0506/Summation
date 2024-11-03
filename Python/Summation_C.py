@@ -1,4 +1,4 @@
-f = open("D:\Programming\python\B.txt", 'r')#remember to change the file address
+f = open("D:\Programming\python\Bs.txt", 'r')#remember to change the file address
 from math import factorial,log,ceil
 from scipy.special import zeta
 import os
@@ -43,12 +43,14 @@ while not isinstance(l,int):
             l=""
             raise ValueError
         if l > 300 : l = 300
-        if k[0] % 1 == 0 and l > k and k > 0 and k2 == 0 : l = int(k)
+        if k % 1 == 0 and l > k and k > 0 and k2 == 0 : l = int(k)
         elif l>k and k==k2==0: l=1
     except:
         print("precision must be a natural number.")
-if k2==0:
-    r1=zeta(-k)
+if k2==0 and k!=-1:
+    r1 = zeta(-k)
+elif k2==0 and k==-1:
+    r1 = 0.577215664901532860606512090082402431042159335
 else:
     r1=0
 for a in range(l+1):
@@ -101,10 +103,13 @@ if n>0 and n%1==0:
     for i in range(1,int(n+1)):
         r2+=i**complex(k,k2)
 elif n%1==0:
-    for i in range(int(n+1),1):
+    if k==0 and n<0:
+        r2-=1
+    for i in range(int(n+1),0):
         r2-=i**complex(k,k2)
 else:
     r2=None
 print("Actual:", r2)
 if r2 is not None:
     print("Error:", r1-r2)
+    
