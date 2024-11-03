@@ -58,7 +58,7 @@ while not isinstance(l, int):
         if l == "exit" or l == "cls" or __file__.replace('\\', '/') in l:
             os._exit(0)
         l = int(l)
-        if l <= 0:
+        if l < 0:
             l = ""
             raise ValueError
         if l > 300: l = 300
