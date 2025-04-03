@@ -10,7 +10,7 @@
 
 ### Python部分
 
-Python程式重靈活性和易用性。需要Python 3.8以上版本和NumPy。
+Python程式重視便利性。需要Python 3.8以上版本和NumPy。
 
 **※** 執行Python腳本前，需修改每個腳本第一行的檔案路徑，使其符合本機中`B.txt`的位置。
 
@@ -64,9 +64,8 @@ C++適合大規模計算。需要C++17相容編譯器。
 - 網頁：支援ES6 module的瀏覽器(Chrome 61+, Firefox 60+, Safari 11+)
 
 ### 補充說明
-1. Web實作需啟用CORS
+1. Web版需啟用CORS
 2. ES6 modules必須由web server提供
-3. 使用dynamic imports進行最佳化模組載入
 
 ## 使用說明
 
